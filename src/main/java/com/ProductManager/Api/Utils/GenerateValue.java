@@ -1,4 +1,4 @@
-package Utils;
+package com.ProductManager.Api.Utils;
 
 import java.util.UUID;
 

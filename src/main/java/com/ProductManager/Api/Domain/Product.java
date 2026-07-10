@@ -1,11 +1,8 @@
-package Domain;
+package com.ProductManager.Api.Domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.Audited;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
@@ -15,10 +12,9 @@ import java.util.UUID;
 
 //anotaão para indentificar que é uma entidade
 @Entity
-//conversao dto
 @Builder
-//tratameno de encapsulamento (get,set,tostring,hash)
-@Data
+@Getter
+@Setter
 //criar construtores cheios
 @AllArgsConstructor
 //criar construtor vazios
@@ -30,7 +26,7 @@ public class Product {
     //anotacao do hibernate para destinguir o tipo
     @JdbcTypeCode(SqlTypes.VARCHAR)
     // coluna do db
-    @Column (name = "id", length = 32)
+    @Column (name = "id")
     private UUID uuid;
 
     //nao deixar a coluna do db vazia

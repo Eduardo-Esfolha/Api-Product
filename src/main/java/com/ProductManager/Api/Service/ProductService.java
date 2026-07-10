@@ -1,8 +1,8 @@
-package Service;
+package com.ProductManager.Api.Service;
 
-import Domain.Product;
-import Dtos.ProductDto;
-import Repository.ProductRepository;
+import com.ProductManager.Api.Domain.Product;
+import com.ProductManager.Api.Dtos.ProductDto;
+import com.ProductManager.Api.Repository.ProductRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,10 +16,10 @@ import java.util.UUID;
 public class ProductService {
 
     //persistindo no banco de dados
-    private final ProductRepository prodcutRepository;
+    private final ProductRepository repository;
 
     //metodo de criar o produto
-    public Product CreateProduct(ProductDto dto){
+    public Product createProduct(ProductDto dto){
 
         Product product = Product.builder().
                 nome(dto.nome()).
@@ -28,47 +28,44 @@ public class ProductService {
                 quantidade(dto.quantidade()).
                 build();
         //salva no banco o propduto criado
-        return prodcutRepository.save(product);
+        return repository.save(product);
 
     }
 
     //busca por id
-    public Product FindByUuid(UUID uuid){
-      return prodcutRepository.findById(uuid)
+    public Product findByUuid(UUID uuid){
+      return repository.findById(uuid)
                .orElseThrow(()-> new RuntimeException("id não encontrado"));
     }
 
     //lista os produto
-    public List<Product> ReadProducts (){
-        return prodcutRepository.findAll();
+    public List<Product> readProducts (){
+        return repository.findAll();
     }
 
     //atualzia um produto
-    public Product UpdateProduct (ProductDto productDto, UUID uuid){
-        if (!prodcutRepository.existsById(uuid)){
-            throw new EntityNotFoundException("Produto não encontrado");
-        }
-        //instancia o produto
-        Product produto = new Product();
+    public Product updateProduct (ProductDto productDto, UUID uuid) {
+        Product produto = repository.findById(uuid)
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+
 
         //seta os novos valores
-        produto.setUuid(uuid);
         produto.setNome(productDto.nome());
         produto.setDescricao(productDto.descricao());
         produto.setPreco(productDto.preco());
         produto.setQuantidade(productDto.quantidade());
         //salva o produtoatualizado no db
-        return prodcutRepository.save(produto);
+        return repository.save(produto);
 
     }
 
     //deleta um produto pelo id
-    public void DeletProduct (UUID uuid){
-        if (!prodcutRepository.existsById(uuid)){
+    public void deleteProduct (UUID uuid){
+        if (!repository.existsById(uuid)){
             throw new EntityNotFoundException("Produto não encontrado");
         }
         //deletando o produto encontrado
-        prodcutRepository.deleteById(uuid);
+        repository.deleteById(uuid);
     }
 
 
