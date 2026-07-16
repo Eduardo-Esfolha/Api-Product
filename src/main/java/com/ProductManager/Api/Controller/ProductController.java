@@ -9,9 +9,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-@RestController
+import java.util.UUID;
+
 @RequestMapping("/produto")
 @RequiredArgsConstructor
+@RestController
 public class ProductController {
     private final ProductService service;
 
@@ -19,14 +21,26 @@ public class ProductController {
     public ResponseEntity  <Product> postProduct (@Valid @RequestBody ProductDto productDto){
         Product produto = service.createProduct(productDto);
         return ResponseEntity.ok().body(produto);
-
     }
+
     @GetMapping
-    public ResponseEntity<List<Product>> readProduct (){
+    public ResponseEntity<List<Product>> readProduct () {
         List<Product> listaprodutos = service.readProducts();
         return ResponseEntity.ok(listaprodutos);
+    }
 
+    @GetMapping("/{uuid}")
+    public ResponseEntity<Product> findByUuid(@Valid @PathVariable UUID uuid) {
+       Product produtofind =  service.findByUuid(uuid);
+        return ResponseEntity.ok(produtofind);
+    }
+
+    @DeleteMapping("/{uuid}")
+    public ResponseEntity <Void> deleteProduto (@Valid @PathVariable UUID uuid){
+        service.deleteProduct(uuid);
+        return ResponseEntity.noContent().build();
     }
 
 
 }
+
