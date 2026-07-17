@@ -29,7 +29,6 @@ public class ProductService {
                 build();
         //salva no banco o propduto criado
         return repository.save(product);
-
     }
 
     //busca por id
@@ -43,20 +42,17 @@ public class ProductService {
         return repository.findAll();
     }
 
-    //atualzia um produto
-    public Product updateProduct (ProductDto productDto, UUID uuid) {
+    //atualiza um produto
+    public Product updateProduct(ProductDto productDto, UUID uuid) {
         Product produto = repository.findById(uuid)
-                .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+                .orElseThrow(() -> new EntityNotFoundException("Produto não encontrado"));
 
-
-        //seta os novos valores
         produto.setNome(productDto.nome());
         produto.setDescricao(productDto.descricao());
         produto.setPreco(productDto.preco());
         produto.setQuantidade(productDto.quantidade());
-        //salva o produtoatualizado no db
-        return repository.save(produto);
 
+        return repository.save(produto);
     }
 
     //deleta um produto pelo id
@@ -67,6 +63,8 @@ public class ProductService {
         //deletando o produto encontrado
         repository.deleteById(uuid);
     }
+
+
 
 
 
